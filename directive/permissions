@@ -1,0 +1,70 @@
+<div id="app" class="container">
+  <ul>
+    <li v-permission="'acessar-dashboard'"><a href="#">Dashboard</a></li>
+    <li v-permission="'acessar-produtos'"><a href="#">Produtos</a></li>
+    <li v-permission="'acessar-contato'"><a href="#">Contato</a></li>
+  </ul>
+</div>
+
+
+<script>
+var store = {
+  state: {
+    user: {
+      id: 1,
+      name: 'afsn',
+      email: 'email@gmail.com',
+      perms: [
+        {
+          id: 1,
+          name: 'acessar-dashboard'
+        },
+        {
+          id: 2,
+          name: 'acessar-produtos'
+        }
+        ,
+        {
+          id: 3,
+          name: 'acessar-contato'
+        }
+      ]
+    } 
+  },
+  hasPerm: function(value)
+  {
+    var perms = store.state.user.perms;
+    var found = false;
+    
+    perms.map(function(perm)
+    {
+      if (perm.name === value)
+      {
+        found = true;
+      }
+    });
+    
+    return found;
+  }
+};
+
+Vue.directive('permission', {
+  update: function(value)
+  {
+    if (store.hasPerm(value)) $(this.el).show();
+    if (! store.hasPerm(value)) $(this.el).remove();
+  }
+});
+
+new Vue({
+  el: '#app',
+  
+  data: function()
+  {
+    return {
+      
+    }
+  }
+  
+});
+</script>
